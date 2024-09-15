@@ -4,14 +4,19 @@ version = "1.0.0"
 edition = "2021"
 
 [dependencies]
-clap = { version = "4.5.17", features = ["derive"] }
+clap = { version = "4.5.17", default-features = false, features = [
+    "std",
+    "derive",
+] }
 
 base64 = "0.22.1"
 rust-crypto = "0.2.36"
 
 serde_urlencoded = "0.7.1"
-serde = { version = "1.0.210", features = ["derive"] }
+serde = { version = "1.0.210", default-features = false, features = ["derive"] }
 
 
 scraper = "0.20.0"
-reqwest = { version = "0.12.7", features = ["blocking"] }
+reqwest = { version = "0.12.7", default-features = false, features = [
+    "blocking",
+] }
