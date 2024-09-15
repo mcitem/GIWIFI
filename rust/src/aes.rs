@@ -5,7 +5,6 @@ use crypto::{
     buffer::{BufferResult, ReadBuffer, RefReadBuffer, RefWriteBuffer, WriteBuffer},
 };
 use serde::Serialize;
-const KEY: &'static str = "1234567887654321";
 
 fn zero_padding(data: &[u8], block_size: usize) -> Vec<u8> {
     let mut padded_data = data.to_vec();
@@ -14,10 +13,10 @@ fn zero_padding(data: &[u8], block_size: usize) -> Vec<u8> {
     padded_data
 }
 
-pub fn crypto_encode(data: &str, iv: &str) -> CryptoData {
+pub fn crypto_encode(data: &str, iv: &str, key: &str) -> CryptoData {
     let mut encryptor = cbc_encryptor(
         KeySize::KeySize128,
-        KEY.as_bytes(),
+        key.as_bytes(),
         iv.as_bytes(),
         NoPadding,
     );
@@ -42,7 +41,7 @@ pub fn crypto_encode(data: &str, iv: &str) -> CryptoData {
         iv: iv.to_string(),
     }
 }
-#[derive(Serialize)]
+#[derive(Serialize, Debug)]
 pub struct CryptoData {
     pub data: String,
     pub iv: String,

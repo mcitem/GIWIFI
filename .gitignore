@@ -1,6 +1,7 @@
 .venv
 target
-tempCodeRunnerFile.py
+tempCodeRunnerFile.*
 __pycache__
 dist
 build
+node_modules

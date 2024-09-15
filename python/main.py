@@ -17,22 +17,22 @@ res = se.get(base + "/gportal/web/login")
 doc = pq(res.text)
 data = {
     "sign": unquote(doc("input[name=sign]").attr("value")),  # -
-    # "sta_vlan": doc("input[name=sta_vlan]").attr("value"),
-    # "sta_port": doc("input[name=sta_port]").attr("value"),
+    "sta_vlan": doc("input[name=sta_vlan]").attr("value"),
+    "sta_port": doc("input[name=sta_port]").attr("value"),
     "sta_ip": doc("input[name=sta_ip]").attr("value"),  # -
-    # "nas_ip": doc("input[name=nas_ip]").attr("value"),
+    "nas_ip": doc("input[name=nas_ip]").attr("value"),
     "nas_name": doc("input[name=nas_name]").attr("value"),  # -
-    # "last_url": doc("input[name=last_url]").attr("value"),
-    # "request_ip": doc("input[name=request_ip]").attr("value"),
-    # "device_mode": doc("input[name=device_mode]").attr("value"),
-    # "device_type": doc("input[name=device_type]").attr("value"),
-    # "device_os_type": doc("input[name=device_os_type]").attr("value"),
-    # "is_mobile": doc("input[name=is_mobile]").attr("value"),
-    # "iv": doc("input[name=iv]").attr("value"),
-    # "login_type": doc("input[name=login_type]").attr("value"),
+    "last_url": doc("input[name=last_url]").attr("value"),
+    "request_ip": doc("input[name=request_ip]").attr("value"),
+    "device_mode": doc("input[name=device_mode]").attr("value"),
+    "device_type": doc("input[name=device_type]").attr("value"),
+    "device_os_type": doc("input[name=device_os_type]").attr("value"),
+    "is_mobile": doc("input[name=is_mobile]").attr("value"),
+    "iv": doc("input[name=iv]").attr("value"),
+    "login_type": doc("input[name=login_type]").attr("value"),
     "account_type": doc("input[name=account_type]").attr("value"),  # -
-    "user_account": "",
-    "user_password": "",
+    "user_account": "username",
+    "user_password": "password",
 }
 ''' error
 sign:{"data":99,"info":"error: sign is empty","status":0}
