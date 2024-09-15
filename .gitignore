@@ -1,0 +1,6 @@
+.venv
+target
+tempCodeRunnerFile.py
+__pycache__
+dist
+build
