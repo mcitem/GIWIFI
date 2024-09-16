@@ -41,7 +41,7 @@ pub fn crypto_encode(data: &str, iv: &str, key: &str) -> CryptoData {
         iv: iv.to_string(),
     }
 }
-#[derive(Serialize, Debug)]
+#[derive(Serialize)]
 pub struct CryptoData {
     pub data: String,
     pub iv: String,

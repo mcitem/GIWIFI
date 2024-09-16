@@ -1,30 +1,29 @@
-use crate::query;
-use crate::Args;
-use reqwest::header::USER_AGENT;
-pub fn logout(args: Args) {
-    let base = args.base;
+use {crate::Args, reqwest::blocking::Client};
 
-    let client = reqwest::blocking::Client::new();
+pub fn main(args: &Args, client: &Client) -> Result<(), Box<dyn std::error::Error>> {
+    let logout_action = client
+        .post(format!("{}/gportal/Web/logoutAction", args.base))
+        .body(serde_urlencoded::to_string([(
+            "si",
+            get_si(&args, client).ok_or("无法获取登录状态，当前可能已离线")?,
+        )])?)
+        .send()?
+        .text()?;
+    println!("{}", logout_action);
+    Ok(())
+}
 
-    let logout_client = client
-        .get(format!("{}/gportal/web/logout", base))
-        .header(USER_AGENT, args.ua.as_str())
-        .send()
-        .unwrap();
-
-    let body = logout_client.text().unwrap();
-    let doc = scraper::Html::parse_document(&body);
-    let si = query(&doc, "si");
-    if si == "" {
-        println!("当前可能未登录");
-        return;
-    } else {
-        let logout_action = client
-            .post(format!("{}/gportal/Web/logoutAction", base))
-            .header(USER_AGENT, args.ua.as_str())
-            .body(serde_urlencoded::to_string(&[("si", si)]).unwrap())
+pub fn get_si(args: &Args, client: &Client) -> Option<String> {
+    scraper::Html::parse_document(
+        &client
+            .get(format!("{}/gportal/web/logout", args.base))
             .send()
-            .unwrap();
-        println!("{}", logout_action.text().unwrap())
-    }
+            .ok()?
+            .text()
+            .ok()?,
+    )
+    .select(&scraper::Selector::parse("input[name=si]").ok()?)
+    .next()
+    .and_then(|input| input.value().attr("value"))
+    .and_then(|f| Some(f.to_string()))
 }

@@ -13,22 +13,6 @@ jobs:
     strategy:
       matrix:
         include:
-          - name: x86_64-linux-gnu
-            runner: ubuntu-latest
-            target: x86_64-unknown-linux-gnu
-
-          - name: x86_64-linux-musl
-            runner: ubuntu-latest
-            target: x86_64-unknown-linux-musl
-
-          - name: i686-linux-gnu
-            runner: ubuntu-latest
-            target: i686-unknown-linux-gnu
-
-          - name: i686-linux-musl
-            runner: ubuntu-latest
-            target: i686-unknown-linux-musl
-
           - name: x86_64-windows-msvc
             runner: windows-latest
             target: x86_64-pc-windows-msvc
@@ -61,19 +45,20 @@ jobs:
 
       - uses: ilammy/setup-nasm@v1
 
-      - if: runner.os == 'Linux' && contains(matrix.target, 'aarch')
-        run: sudo apt-get update && sudo apt-get install -y musl-tools libssl-dev gcc-aarch64-linux-gnu
-
       - if: runner.os == 'Linux' && !contains(matrix.target, 'aarch')
-        run: sudo apt-get update && sudo apt-get install -y musl-tools libssl-dev gcc-multilib
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y musl-tools libssl-dev gcc-multilib
+              export CC=musl-gcc
+              export OPENSSL_DIR=/usr/lib/x86_64-linux-gnu
+              export PKG_CONFIG_ALLOW_CROSS=1
+              export PKG_CONFIG_PATH=/usr/lib/x86_64-linux-gnu/pkgconfig
 
       - uses: Swatinem/rust-cache@v2
-
       - run: cd rust; cargo build --verbose --locked --release --target ${{ matrix.target }}; ls
       - run: ls rust/target/${{ matrix.target }}/release
 
       - uses: actions/upload-artifact@v4
-        if: always()
         with:
           name: ${{ matrix.name }}
           path: |
