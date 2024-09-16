@@ -31,4 +31,15 @@ pub struct Args {
         default_value = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36 Edg/128.0.0.0"
     )]
     pub ua: String,
+
+    /// 维持控制台
+    #[arg(long,action = clap::ArgAction::SetTrue)]
+    pub pause: bool,
+}
+use std::io::{self, Write};
+pub fn pause() {
+    let mut stdout = io::stdout();
+    write!(stdout, "按回车键继续...").unwrap();
+    stdout.flush().unwrap();
+    io::stdin().read_line(&mut String::new()).unwrap();
 }

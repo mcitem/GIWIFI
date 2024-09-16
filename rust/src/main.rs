@@ -16,14 +16,20 @@ fn main() -> Result<(), Box<dyn Error>> {
 
     let client = Client::builder().user_agent(&args.ua).build()?;
 
-    match args.quit {
+    let _ = match args.quit {
         true => logout::main(&args, &client),
         false => {
             if args.username.is_empty() || args.password.is_empty() {
-                println!("用户名和密码不能为空");
-                return Ok(());
+                Err("用户名或密码不能为空")?;
             }
             login::main(&args, &client)
         }
+    }?;
+    match args.pause {
+        true => {
+            pause();
+            Ok(())
+        }
+        false => Ok(()),
     }
 }
