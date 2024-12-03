@@ -5,7 +5,8 @@ on:
     tags:
       - "*"
 env:
-  PROJECT_NAME: giwifi
+  BIN_1: giwifi
+  BIN_2: giwifi-ui
 jobs:
   build:
     continue-on-error: true
@@ -62,5 +63,7 @@ jobs:
         with:
           name: ${{ matrix.name }}
           path: |
-            rust/target/${{ matrix.target }}/release/${{ env.PROJECT_NAME }}.exe
-            rust/target/${{ matrix.target }}/release/${{ env.PROJECT_NAME }}
+            rust/target/${{ matrix.target }}/release/${{ env.BIN_1 }}.exe
+            rust/target/${{ matrix.target }}/release/${{ env.BIN_1 }}
+            rust/target/${{ matrix.target }}/release/${{ env.BIN_2 }}.exe
+            rust/target/${{ matrix.target }}/release/${{ env.BIN_2 }}

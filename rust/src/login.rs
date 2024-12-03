@@ -7,20 +7,23 @@ use {
 
 pub fn main(args: &Args, client: &Client) -> Result<(), Box<dyn Error>> {
     match get_si(&args, client) {
-        Some(si) => {
-            println!("当前已登录 会话id为{}", si);
-            return Ok(());
-        }
+        Some(si) => match args.force {
+            false => {
+                return Err(format!("当前已登录 会话id为{}", si).into());
+            }
+            true => {
+                println!("当前已登录 会话id为{}", si);
+                crate::logout::main(args, client)?;
+            }
+        },
         None => {}
     };
-
-    let doc = scraper::Html::parse_document(
-        &client
-            .get(format!("{}/gportal/web/login", args.base))
-            .send()?
-            .text()?,
-    );
-
+    let doc = &client
+        .get(format!("{}/gportal/web/login", args.base))
+        .send()?
+        .text()?;
+    // println!("{}", doc);
+    let doc = scraper::Html::parse_document(&doc);
     let f = doc
         .select(&scraper::Selector::parse("#loginForm")?)
         .next()
@@ -48,7 +51,7 @@ pub fn main(args: &Args, client: &Client) -> Result<(), Box<dyn Error>> {
         .collect::<Vec<_>>()
         .join("&");
 
-    let data = crypto_encode(&data, iv, &args.key);
+    let data = crypto_encode(&data, &iv, &args.key);
 
     let data = serde_urlencoded::to_string(data)?;
 

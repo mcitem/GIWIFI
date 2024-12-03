@@ -1,48 +1,42 @@
-use base64::{prelude::BASE64_STANDARD, Engine};
-use crypto::{
-    aes::{cbc_encryptor, KeySize},
-    blockmodes::NoPadding,
-    buffer::{BufferResult, ReadBuffer, RefReadBuffer, RefWriteBuffer, WriteBuffer},
+use {
+    aes::Aes128,
+    base64::{prelude::BASE64_STANDARD, Engine},
+    cbc::{
+        cipher::{block_padding::ZeroPadding, BlockEncryptMut, KeyIvInit},
+        Encryptor,
+    },
+    serde::Serialize,
 };
-use serde::Serialize;
 
-fn zero_padding(data: &[u8], block_size: usize) -> Vec<u8> {
-    let mut padded_data = data.to_vec();
-    let padding_length = block_size - (data.len() % block_size);
-    padded_data.extend(vec![0; padding_length]);
-    padded_data
+#[derive(Serialize)]
+
+pub struct EncryptedData {
+    pub data: String, // 加密后的数据
+    pub iv: String,
 }
 
-pub fn crypto_encode(data: &str, iv: &str, key: &str) -> CryptoData {
-    let mut encryptor = cbc_encryptor(
-        KeySize::KeySize128,
-        key.as_bytes(),
-        iv.as_bytes(),
-        NoPadding,
-    );
-    let data = zero_padding(data.as_bytes(), 16);
-    let mut input = RefReadBuffer::new(&data);
-    let mut output = vec![0; data.len() * 2];
-    let mut output_buffer = RefWriteBuffer::new(&mut output);
-    let s = match encryptor.encrypt(&mut input, &mut output_buffer, true) {
-        Ok(BufferResult::BufferUnderflow) => {
-            let encrypted_data = output_buffer.take_read_buffer().take_remaining().to_vec();
-            BASE64_STANDARD.encode(&encrypted_data)
-        }
-        Ok(BufferResult::BufferOverflow) => {
-            panic!("Buffer overflow occurred");
-        }
-        Err(error) => {
-            panic!("Encryption error: {:?}", error);
-        }
+pub fn crypto_encode(data: &str, iv: &str, key: &str) -> EncryptedData {
+    let mut buf = vec![0; data.len() * 2];
+    buf[..data.len()].copy_from_slice(&data.as_bytes());
+    let e = match Encryptor::<Aes128>::new(key.as_bytes().into(), iv.as_bytes().into())
+        .encrypt_padded_mut::<ZeroPadding>(&mut buf, data.len())
+    {
+        Ok(e) => e,
+        Err(e) => panic!("{:?}", e),
     };
-    CryptoData {
-        data: s,
-        iv: iv.to_string(),
+    let b64 = BASE64_STANDARD.encode(&e);
+    // println!("{:?}", b64);
+    EncryptedData {
+        data: b64,
+        iv: iv.into(),
     }
 }
-#[derive(Serialize)]
-pub struct CryptoData {
-    pub data: String,
-    pub iv: String,
+
+#[test]
+fn test_crypto_decode() {
+    let data = "Hello, World!";
+    let iv = "0123456789abcdef";
+    let key = "0123456789abcdef";
+    let crypto_data = crypto_encode(data, iv, key);
+    assert_eq!(crypto_data.data, "BY4GP9KAMVmefx9XMXA1Hg==");
 }
