@@ -1,0 +1,27 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "giwifi",
+  "version": "1.0.0",
+  "identifier": "com.mcitem.giwifi",
+  "build": {
+    "beforeDevCommand": "pnpm -filter frontend dev",
+    "devUrl": "http://localhost:3000",
+    "beforeBuildCommand": "pnpm -filter frontend build",
+    "frontendDist": "../frontend/dist"
+  },
+  "app": {
+    "windows": [
+      {
+        "title": "Giwifi",
+        "width": 800,
+        "height": 600
+      }
+    ],
+    "security": {
+      "csp": null
+    }
+  },
+  "bundle": {
+    "active": false
+  }
+}

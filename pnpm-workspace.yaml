@@ -1,0 +1,6 @@
+packages:
+  - frontend
+  - js
+onlyBuiltDependencies:
+  - core-js
+  - vue-demi

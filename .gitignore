@@ -1,7 +1,6 @@
-.venv
-target
-tempCodeRunnerFile.*
-__pycache__
-dist
-build
 node_modules
+target
+dist
+gen
+__pycache__
+.venv

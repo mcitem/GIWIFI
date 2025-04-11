@@ -1,0 +1,22 @@
+[package]
+name = "giwifi-ui"
+version = "0.1.0"
+edition = "2024"
+
+[lib]
+name = "giwifi_ui_lib"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[dependencies]
+tauri = { version = "2", features = [] }
+giwifi = { path = "../lib" }
+
+tokio = { version = "1.44.2", features = ["full", "rt"] }
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+
+[dependencies.scraper]
+version = "0.23.1"
+features = ["atomic"]
