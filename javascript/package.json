@@ -1,0 +1,12 @@
+{
+  "name": "js",
+  "type": "module",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {},
+  "dependencies": {
+    "axios": "^1.10.0",
+    "cheerio": "^1.1.0",
+    "crypto-js": "^4.2.0"
+  }
+}

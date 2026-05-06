@@ -1,0 +1,22 @@
+lockfileVersion: '9.0'
+
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
+
+importers:
+
+  .:
+    devDependencies:
+      '@kuoruan/luci-types':
+        specifier: ^1.1.2
+        version: 1.1.2
+
+packages:
+
+  '@kuoruan/luci-types@1.1.2':
+    resolution: {integrity: sha512-WQnUJ3tWVIXJEwJkQjgehMzfHj8QiFXd/zIGEQwHnCmOD855uWbR0+AYkIVteywursdx9gTqNG4kfW4LLhgK9w==}
+
+snapshots:
+
+  '@kuoruan/luci-types@1.1.2': {}

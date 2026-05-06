@@ -1,0 +1,52 @@
+{
+    "luci-app-giwifi": {
+        "description": "Grant UCI and file access to LuCI app giwifi",
+        "read": {
+            "file": {
+                "/etc/config/luci-app-giwifi.json": [
+                    "read"
+                ],
+                "/etc/crontabs/root": [
+                    "read"
+                ],
+                "/tmp/giwifi-login.log": [
+                    "read"
+                ],
+                "/tmp/giwifi-login.pid": [
+                    "read"
+                ]
+            },
+            "uci": [
+                "luci-app-giwifi"
+            ]
+        },
+        "write": {
+            "file": {
+                "/etc/config/luci-app-giwifi.json": [
+                    "write"
+                ],
+                "/etc/crontabs/root": [
+                    "write"
+                ],
+                "/tmp/giwifi-login.log": [
+                    "write"
+                ],
+                "/tmp/giwifi-login.pid": [
+                    "write"
+                ],
+                "/etc/luci-app-giwifi/task.sh": [
+                    "exec"
+                ],
+                "/usr/bin/giwifi": [
+                    "exec"
+                ],
+                "/bin/sh": [
+                    "exec"
+                ]
+            },
+            "uci": [
+                "luci-app-giwifi"
+            ]
+        }
+    }
+}

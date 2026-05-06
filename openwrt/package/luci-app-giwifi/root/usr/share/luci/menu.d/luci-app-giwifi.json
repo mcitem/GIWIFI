@@ -1,0 +1,9 @@
+{
+    "admin/services/luci-app-giwifi": {
+        "title": "luci-app-giwifi",
+        "action": {
+            "type": "view",
+            "path": "luci-app-giwifi/index"
+        }
+    }
+}

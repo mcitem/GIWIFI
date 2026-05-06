@@ -1,0 +1,11 @@
+#!/bin/sh
+
+# [ -e "/etc/config/ucitrack" ] && {
+#     uci -q delete ucitrack.@luci-app-giwifi[-1]
+#     uci -q add ucitrack luci-app-giwifi
+#     uci -q set ucitrack.@luci-app-giwifi[-1].init=luci-app-giwifi
+#     uci -q commit ucitrack
+# }
+
+rm -f /tmp/luci-indexcache* >/dev/null 2>&1
+exit 0

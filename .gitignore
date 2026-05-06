@@ -1,0 +1,11 @@
+node_modules
+target
+dist
+gen
+__pycache__
+.venv
+
+openwrt/.dl
+openwrt/.sdk
+openwrt/bin
+openwrt/package/luci-app-giwifi/root/usr/bin/giwifi
